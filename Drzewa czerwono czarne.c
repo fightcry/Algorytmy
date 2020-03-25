@@ -1,11 +1,6 @@
-//                                          pmp@inf.ug.edu.pl  2014
-// drukowanie drzew cz-cz z wartownikiem wspolnym
-// dla wszystkich wezlow:
-// drukowanie na ekran tekstowy i przez dot z pakietu graphviz
-
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define RED 1        /* stala oznaczajaca kolor wezla */
 #define BLACK 0      /* stala oznaczajaca kolor wezla */
@@ -40,11 +35,6 @@ void nilInit(void){
 void drukuj(Wskwezla w);
 /* funkcja drukujaca drzewo binarne na ekranie (tutaj tylko deklaracja) */
 /* funkcja drukuje drzewo o korzeniu "w"                                */
-
-void drukujDot(Wskwezla r);
-  // generuje w plikach drzewo0.gv,  drzewo1.gv ...
-  // opis drzew o korzeniu r do wydrukowania przez program dot
-  // zlecenie "dot -Tpdf -O drzewo1.gv" utworzy plik "drzewo1.gv.pdf" 
 
 /* ------------  implementacja ------------------------------------- */
 char wydruk[IL_POZ+1][SZER_EKR];
@@ -90,7 +80,7 @@ void drukuj(Wskwezla w){
   }
 }
 
-void drukujKrawedz(FILE *plikwy, Wskwezla r, int z, Wskwezla syn, int zs){
+void drukujKrawedz(FILE *plikwy, int z, Wskwezla syn, int zs){
 // wezel r o numerze z jest juz wydrukowany
 // teraz drukujemy jego syna "syn" o numerze zs oraz krawedz miedzy nimi
   if (syn == nil){
@@ -117,41 +107,12 @@ int rekDrukujDot(Wskwezla r, int z, FILE *plikwy){
   int nz;
   if (r == nil) return z;
   else{
-    drukujKrawedz(plikwy,r,z,r->left,z+1);
+    drukujKrawedz(plikwy,z,r->left,z+1);
     nz=rekDrukujDot(r->left,z+1,plikwy);
-    drukujKrawedz(plikwy,r,z,r->right,nz+1);
+    drukujKrawedz(plikwy,z,r->right,nz+1);
     nz=rekDrukujDot(r->right,nz+1,plikwy);
     return nz;
   }
-}
-
-void drukujDot(Wskwezla r){
-  // generuje w plikach drzewo0.gv, dzrewo1.gv, ... 
-  // opisy drzew o korzeniu r pzeznaczone do wydrukowania przez program dot
-  // zlecenie "dot -Tpdf -O drzewo1.gv" utworzy plik "drzewo1.gv.pdf" 
-  static int gdzie=0;
-  char numer[10];
-  char nazwap[20]="drzewo";
-  FILE *plikwy;
-  snprintf(numer,9,"%d",gdzie);
-  strcat(nazwap,numer);
-  strcat(nazwap,".gv");
-  plikwy=fopen(nazwap,"w");
-  gdzie++;
-  fprintf(plikwy, "graph drzewo{\n");
-  fprintf(plikwy, "size = \"2,20\"");
-  if (r!=nil){
-    if (r->kolor == RED)
-      fprintf(plikwy,"%d [shape=circle, color=red, label=\"",0);
-    else
-      fprintf(plikwy,"%d [shape=circle, color=black, label=\"",0);
-    fprintf(plikwy,"%d ",r->klucz);
-    fprintf(plikwy,"\"]\n");
-    rekDrukujDot(r,0,plikwy);
-  }
-  fprintf(plikwy, "}\n");
-  fclose(plikwy);
-  printf("wydrukowane %s\n",nazwap);
 }
 
 Wskwezla nowyWezel(int klucz, int kolor){
@@ -170,7 +131,7 @@ Wskwezla naprawWstawianie(Wskwezla obecnyWezel) {
 	while(obecnyWezel->p != nil) {
 	if(obecnyWezel->kolor == RED)
 	if(obecnyWezel->p->kolor == RED) {								
-		if(obecnyWezel->p->p != nil)								// jeœli ojciec to korzeñ to wyjdŸ
+		if(obecnyWezel->p->p != nil)								// jesli ojciec to korzen to wyjdz
 			if(obecnyWezel->p == obecnyWezel->p->p->left) {
 				if(obecnyWezel->p->p->right->kolor == RED) {		//przypadek 1 - przekolorowanie
 					obecnyWezel->p->kolor = BLACK;
@@ -181,7 +142,7 @@ Wskwezla naprawWstawianie(Wskwezla obecnyWezel) {
 				}
 				else
 					if(obecnyWezel == obecnyWezel->p->right) {		//przypadek 2
-						Wskwezla tempLewy = obecnyWezel->left;      //obrót w lewo
+						Wskwezla tempLewy = obecnyWezel->left;      //obrot w lewo
 						Wskwezla tempDziadek = obecnyWezel->p->p;
 						obecnyWezel->p->p->left = obecnyWezel;
 						obecnyWezel->p->right = tempLewy;
@@ -272,7 +233,7 @@ Wskwezla naprawWstawianie(Wskwezla obecnyWezel) {
 				}
 				else
 					if(obecnyWezel == obecnyWezel->p->left) {		//przypadek 2
-						Wskwezla tempPrawy = obecnyWezel->right;    //obrót w lewo, lustrzanie odbity
+						Wskwezla tempPrawy = obecnyWezel->right;    //obrot w lewo, lustrzanie odbity
 						Wskwezla tempDziadek = obecnyWezel->p->p;
 						obecnyWezel->p->p->right = obecnyWezel;
 						obecnyWezel->p->left = tempPrawy;
