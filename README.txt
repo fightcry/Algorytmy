@@ -1,0 +1,1 @@
+Repo prowadzone jest oraz programowane po polsku ze względu na wymagania profesora. Pozostałe programy będą robione zgodnie z sztuką
