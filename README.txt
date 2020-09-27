@@ -1,1 +1,1 @@
-Repo prowadzone jest oraz programowane po polsku ze względu na wymagania profesora. Pozostałe programy będą robione zgodnie z sztuką
+Repo prowadzone jest oraz programowane po polsku ze względu na wymagania profesora. Są to pliki historyczne z 2018 roku częściowo poprawione.

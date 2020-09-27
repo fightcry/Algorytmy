@@ -1,0 +1,1 @@
+Repository done in Polish due to the requirements of the university. This is legacy code, mostly unchanged from 2018, when I was a beginner. Uploaded for reference
